@@ -1,0 +1,7 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="National Excellent Engineer College logo placeholder">
+  <rect width="240" height="240" rx="28" fill="#f7f9fc"/>
+  <circle cx="120" cy="92" r="52" fill="none" stroke="#22577a" stroke-width="10"/>
+  <path d="M65 149h110M82 170h76M97 191h46" stroke="#22577a" stroke-width="10" stroke-linecap="round"/>
+  <text x="120" y="100" text-anchor="middle" font-size="34" font-family="Arial, sans-serif" font-weight="700" fill="#22577a">EIE</text>
+  <text x="120" y="222" text-anchor="middle" font-size="20" font-family="Microsoft YaHei, Arial, sans-serif" fill="#22577a">卓越工程师</text>
+</svg>

@@ -1,4 +1,4 @@
-const data = window.SITE_DATA;
+﻿const data = window.SITE_DATA;
 
 let currentLang = localStorage.getItem("siteLanguage") || "en";
 
@@ -40,7 +40,7 @@ function renderPage() {
   document.getElementById("hero-summary").textContent = content.summary;
   document.getElementById("about-text").textContent = content.about;
   document.getElementById("footer-updated").textContent = content.updated;
-  document.getElementById("lang-toggle").textContent = isChinese ? "EN" : "中文";
+  document.getElementById("lang-toggle").textContent = isChinese ? "EN" : "涓枃";
 
   document.getElementById("main-nav").innerHTML = Object.entries(content.nav)
     .map(([id, label]) => `<a href="#${id}">${label}</a>`)
@@ -69,19 +69,23 @@ function renderPage() {
   );
 
   document.getElementById("education-list").innerHTML = content.education
-    .map(
-      (item) => `
+    .map((item) => {
+      const logos = [item.logo, item.secondaryLogo].filter(validUrl);
+      return `
         <article class="education-item">
-          <div class="item-time">${item.time}</div>
-          <div>
-            <h3>${item.school}</h3>
-            <p>${item.degree}</p>
-            <p>${item.detail}</p>
-            <p class="muted">${item.gpa}</p>
+          <div class="education-logo-set">
+            ${logos.map((logo) => `<img class="education-logo" src="${logo}" alt="${item.school} logo" loading="lazy" />`).join("")}
           </div>
+          <div class="education-main">
+            <h3>${item.school}</h3>
+            <p class="education-degree">${item.degree}</p>
+            <p>${item.detail}</p>
+            ${item.note ? `<p class="education-note">${item.note}</p>` : ""}
+          </div>
+          <div class="education-time">${item.time}</div>
         </article>
-      `
-    )
+      `;
+    })
     .join("");
 
   document.getElementById("interest-list").innerHTML = content.interests
@@ -159,3 +163,4 @@ document.getElementById("lang-toggle").addEventListener("click", () => {
 });
 
 renderPage();
+
