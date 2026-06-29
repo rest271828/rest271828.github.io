@@ -21,8 +21,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, "Noto Sans SC",
-    "Microsoft YaHei", sans-serif;
+  font-family: Georgia, "Times New Roman", "Noto Serif SC", "Songti SC", SimSun, serif;
   font-size: 16px;
   line-height: 1.68;
 }
@@ -359,7 +358,7 @@ h3 {
 .skill-row span + span::before {
   margin-right: 7px;
   color: #a3aab6;
-  content: "路";
+  content: "·";
 }
 
 .plain-list {
@@ -438,7 +437,7 @@ footer {
 }
 
 /* Education 区域：参考经典学术个人主页的校徽 + 学校 + 时间布局。 */
-#about h2 {
+#education h2 {
   display: inline-block;
   margin-bottom: 30px;
   border-bottom: 3px solid #2f80d8;
@@ -451,7 +450,7 @@ footer {
 }
 
 .education-item {
-  grid-template-columns: 130px minmax(0, 1fr) 190px;
+  grid-template-columns: 150px minmax(0, 1fr) 210px;
   align-items: start;
   gap: 28px;
   border-bottom: 0;
@@ -468,19 +467,19 @@ footer {
 }
 
 .education-logo {
-  max-width: 110px;
-  max-height: 108px;
+  max-width: 126px;
+  max-height: 116px;
   object-fit: contain;
 }
 
 .education-logo + .education-logo {
-  max-width: 72px;
-  max-height: 72px;
+  max-width: 86px;
+  max-height: 86px;
 }
 
 .education-main h3 {
   margin-bottom: 7px;
-  font-family: Georgia, "Times New Roman", "Noto Serif SC", serif;
+  font-family: Georgia, "Times New Roman", "Noto Serif SC", "Songti SC", SimSun, serif;
   font-size: 25px;
   font-weight: 700;
   line-height: 1.25;
@@ -534,4 +533,6 @@ footer {
     font-size: 20px;
   }
 }
+
+
 

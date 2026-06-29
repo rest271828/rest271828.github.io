@@ -27,15 +27,16 @@
   // 之后大多数英文内容都在这里改：首页介绍、关于我、项目、经历、技能、证书、奖项和联系方式。
   en: {
     name: "Qidong Sun",
-    chineseName: "Sun Qidong",
+    chineseName: "",
     siteLabel: "Academic / Engineering Portfolio",
     subtitle: "Undergraduate Robotics Student | Robot Learning | Reinforcement Learning | Quadruped Locomotion",
     summary:
       "I am an undergraduate robotics engineering student at Chongqing University, interested in reinforcement learning, robot learning, embodied AI, and quadruped locomotion. I am currently focusing on RL-based locomotion control for quadruped robots, especially Unitree Go2 simulation, training, validation, and deployment workflows.",
     about:
-      "I study Robotics Engineering in the Mingyue Sci-Tech Innovation Class at the National Excellent Engineer College, Chongqing University. My current work and learning focus on reinforcement learning for quadruped locomotion, including Isaac Lab / RobotLab simulation environments, RSL-RL PPO training, sim-to-sim validation, and policy deployment. I am also interested in how reinforcement learning, Meta-RL, imitation learning, and embodied intelligence can improve robot motion capability, adaptability, and robustness.",
+      "I study Robotics Engineering in the Mingyue Sci-Tech Innovation Class at the ELITE INSTITUTE OF ENGINEERING, Chongqing University. My current work and learning focus on reinforcement learning for quadruped locomotion, including Isaac Lab / RobotLab simulation environments, RSL-RL PPO training, sim-to-sim validation, and policy deployment. I am also interested in how reinforcement learning, Meta-RL, imitation learning, and embodied intelligence can improve robot motion capability, adaptability, and robustness.",
     nav: {
       about: "About",
+      education: "Education",
       interests: "Interests",
       projects: "Projects",
       experience: "Experience",
@@ -52,6 +53,7 @@
     },
     sections: {
       about: "About",
+      education: "Education",
       interests: "Research Interests",
       projects: "Selected Projects",
       experience: "Experience",
@@ -72,11 +74,11 @@
       {
         school: "Chongqing University, Chongqing, China",
         degree: "B.Eng. Undergraduate Student in Robotics Engineering",
-        detail: "National Excellent Engineer College / Mingyue Sci-Tech Innovation Class",
+        detail: "ELITE INSTITUTE OF ENGINEERING / Mingyue Sci-Tech Innovation Class",
         note: "GPA: Pending official update",
         time: "Time: To be updated",
         logo: "assets/logos/cqu.png",
-        secondaryLogo: "assets/logos/eie.svg"
+        secondaryLogo: "assets/logos/eie.png"
       }
     ],
     interests: [
@@ -180,9 +182,10 @@
     summary:
       "我是重庆大学机器人工程本科生，兴趣方向包括强化学习、机器人学习、具身智能和四足机器人运动控制。目前主要关注基于强化学习的四足机器人运动控制，尤其是 Unitree Go2 的仿真、训练、验证与部署流程。",
     about:
-      "我就读于重庆大学国家卓越工程师学院 / 明月科创班（机器人工程）。当前学习和研究重点包括四足机器人强化学习运动控制、Isaac Lab / RobotLab 仿真环境、RSL-RL PPO 训练、sim-to-sim 验证和策略部署。我也关注强化学习、Meta-RL、模仿学习和具身智能如何提升机器人的运动能力、适应能力与鲁棒性。",
+      "我就读于重庆大学卓越工程师学院（ELITE INSTITUTE OF ENGINEERING） / 明月科创班（机器人工程）。当前学习和研究重点包括四足机器人强化学习运动控制、Isaac Lab / RobotLab 仿真环境、RSL-RL PPO 训练、sim-to-sim 验证和策略部署。我也关注强化学习、Meta-RL、模仿学习和具身智能如何提升机器人的运动能力、适应能力与鲁棒性。",
     nav: {
       about: "关于",
+      education: "教育",
       interests: "方向",
       projects: "项目",
       experience: "经历",
@@ -199,6 +202,7 @@
     },
     sections: {
       about: "关于我",
+      education: "教育经历",
       interests: "研究 / 工程兴趣",
       projects: "代表项目",
       experience: "经历",
@@ -219,11 +223,11 @@
       {
         school: "重庆大学，中国重庆",
         degree: "机器人工程本科生",
-        detail: "国家卓越工程师学院 / 明月科创班（机器人工程）",
+        detail: "卓越工程师学院（ELITE INSTITUTE OF ENGINEERING） / 明月科创班（机器人工程）",
         note: "GPA：待官方更新",
         time: "时间：待补充",
         logo: "assets/logos/cqu.png",
-        secondaryLogo: "assets/logos/eie.svg"
+        secondaryLogo: "assets/logos/eie.png"
       }
     ],
     interests: ["机器人强化学习", "四足机器人运动控制", "具身智能", "机器人学习", "模仿学习", "Sim-to-Real / Sim-to-Sim", "VLA / VLM for Robotics", "ROS2 机器人系统", "运动规划与控制", "自主机器人系统"],
@@ -284,3 +288,7 @@
     updated: "最近更新：待补充"
   }
 };
+
+
+
+

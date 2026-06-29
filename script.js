@@ -35,12 +35,12 @@ function renderPage() {
   document.title = `${content.name} - Homepage`;
   document.getElementById("site-title").textContent = content.name;
   document.getElementById("hero-label").textContent = content.siteLabel;
-  document.getElementById("hero-name").textContent = displayName(content);
+  document.getElementById("hero-name").textContent = isChinese ? displayName(content) : content.name;
   document.getElementById("hero-subtitle").textContent = content.subtitle;
   document.getElementById("hero-summary").textContent = content.summary;
   document.getElementById("about-text").textContent = content.about;
   document.getElementById("footer-updated").textContent = content.updated;
-  document.getElementById("lang-toggle").textContent = isChinese ? "EN" : "涓枃";
+  document.getElementById("lang-toggle").textContent = isChinese ? "EN" : "中文";
 
   document.getElementById("main-nav").innerHTML = Object.entries(content.nav)
     .map(([id, label]) => `<a href="#${id}">${label}</a>`)
@@ -163,4 +163,5 @@ document.getElementById("lang-toggle").addEventListener("click", () => {
 });
 
 renderPage();
+
 
