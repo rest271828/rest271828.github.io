@@ -120,15 +120,6 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
 .reveal { opacity: 0; transform: translateY(10px); transition: opacity 450ms ease, transform 450ms ease; }
 .reveal.is-visible { opacity: 1; transform: none; }
 
-/* 公开简历与首页共用内容，打印时隐藏导航和按钮。 */
-.cv-page .hero { margin-bottom: 30px; }
-.cv-page section { margin-bottom: 32px; }
-.cv-page .print-button { border: 1px solid var(--line); background: #fff; padding: 4px 12px; border-radius: 3px; color: var(--link); }
-.cv-page .education-item { grid-template-columns: 1fr; }
-.cv-page .education-logo-set { display: none; }
-.cv-page .project-item.has-media { display: block; }
-.cv-page .project-media { display: none; }
-
 @media (max-width: 1000px) {
   .entry-heading { flex-wrap: wrap; gap: 0 20px; }
   .entry-heading > .education-time { width: 100%; margin-bottom: 6px; }
@@ -155,10 +146,9 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
   .skill-row { grid-template-columns: 1fr; gap: 3px; }
   .entry-heading { display: block; }
   .entry-heading h3 { margin-bottom: 4px; }
-  .cv-page .nav-wrap { flex-wrap: wrap; }
 }
 
-/* 首页采用资料栏与正文双栏；简历继续使用单栏打印排版。 */
+/* 首页采用资料栏与正文双栏；手机端折叠为单栏。 */
 .home-page {
   --page-width: 1160px;
   --surface: #fff;
@@ -261,6 +251,12 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
   background: #fff;
   border-radius: 4px;
 }
+.home-page .education-logo[src$="cqu-seal.png"] {
+  width: 54px;
+  height: 54px;
+  margin-inline: auto;
+  border-radius: 50%;
+}
 .home-page .education-main h3 { font-size: 17px; margin-bottom: 3px; }
 .home-page .education-time { font-size: 13px; }
 .home-page .location { font-size: 13px; }
@@ -306,10 +302,10 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
   @page { margin: 16mm; }
   body { font-size: 10pt; line-height: 1.45; }
   .page { width: 100%; }
-  .topbar, .skip-link, .print-button, .project-media, .portrait, .profile, footer, #contact { display: none !important; }
+  .site-header, .skip-link, .project-media, .portrait, .profile, footer, #contact { display: none !important; }
   .site-layout { display: block; padding: 0; }
   main { padding: 0; }
-  section, .cv-page section { margin-bottom: 18px; }
+  section { margin-bottom: 18px; }
   h1 { font-size: 23pt; }
   h2 { font-size: 15pt; margin-bottom: 12px; break-after: avoid; }
   h3, .education-main h3 { font-size: 12pt; break-after: avoid; }

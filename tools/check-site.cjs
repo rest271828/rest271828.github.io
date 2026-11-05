@@ -3,8 +3,11 @@ const fs = require("node:fs");
 const path = require("node:path");
 const vm = require("node:vm");
 const assert = require("node:assert/strict");
+const { createHash } = require("node:crypto");
 const root = path.resolve(__dirname, "..");
 const files = JSON.parse(fs.readFileSync(path.join(__dirname, "public-files.json"), "utf8"));
+const publicCv = "assets/Qidong-Sun-CV.pdf";
+const reviewedCvHash = "0cf825c2cb9ee7502d2ed2014aac40cd418e45d819e1f72d78acd4ee95adfda1";
 const read = (name) => fs.readFileSync(path.join(root, name), "utf8");
 let passed = 0;
 function check(condition, message) { assert.ok(condition, message); passed++; }
@@ -12,7 +15,7 @@ function check(condition, message) { assert.ok(condition, message); passed++; }
 for (const name of files) {
   check(!path.isAbsolute(name) && !name.split("/").includes(".."), "非法发布路径");
   check(fs.existsSync(path.join(root, name)), "缺少公开文件：" + name);
-  check(!/\.(pdf|docx?|zip|env)$/i.test(name), "不应发布申请原件：" + name);
+  check(name === publicCv || !/\.(pdf|docx?|zip|env)$/i.test(name), "不应发布申请原件：" + name);
   if (!/\.(html|js|css)$/.test(name)) continue;
   const source = read(name);
   check(!/[\uFFFD\uE000-\uF8FF]/u.test(source), "发现编码异常：" + name);
@@ -41,7 +44,8 @@ for (const lang of ["en", "zh"]) {
   }
   check(content.education[1].note.includes("3.51"), "成绩未更新");
 }
-check(data.cv === "cv.html", "简历不应指向申请 PDF");
+check(data.cv === publicCv && files.includes(publicCv), "简历必须链接审核后的公开 PDF");
+check(createHash("sha256").update(fs.readFileSync(path.join(root, publicCv))).digest("hex") === reviewedCvHash, "公开 PDF 已被替换，需重新检查隐私");
 check(!files.includes("files/cv.pdf"), "旧 CV 仍在发布清单");
 check(!files.includes("assets/logos/eie.png"), "院徽仍在发布清单");
 
@@ -81,19 +85,23 @@ function runView(page, stored = "en", blocked = false, reduced = false, savedThe
   vm.runInNewContext(read("script.js"), context);
   return { nodes, document, observed };
 }
-for (const page of ["index.html", "cv.html"]) {
+{
+  const page = "index.html";
   for (const settings of [["en", false], ["zh", false], ["corrupt", false], ["en", true]]) {
     const view = runView(page, ...settings);
     const initialChinese = settings[0] === "zh";
     check(view.document.documentElement.lang === (initialChinese ? "zh-CN" : "en"), "初始语言错误");
-    if (!initialChinese) check(view.nodes.get(page === "index.html" ? "profile-name" : "hero-name").textContent === "Qidong Sun", "英文姓名重复");
+    if (!initialChinese) check(view.nodes.get("profile-name").textContent === "Qidong Sun", "英文姓名错误");
     view.nodes.get("lang-toggle").events.click();
     check(view.document.documentElement.lang === (initialChinese ? "en" : "zh-CN"), "切换语言失败");
-    check(!view.nodes.get("hero-links").innerHTML.includes("files/cv.pdf"), "出现原始 CV 下载");
+    for (const id of ["main-nav", "hero-links"]) {
+      check(view.nodes.get(id).innerHTML.includes('href="' + publicCv + '" download'), "公开 PDF 下载入口缺失");
+    }
     check(!view.nodes.get("contact-links").innerHTML.includes("LinkedIn"), "出现空 LinkedIn 按钮");
     check(view.nodes.get("research-list").innerHTML.includes("0.143"), "研究条目未渲染");
     const education = view.nodes.get("education-list").innerHTML;
-    check((education.match(/<img\b/g) || []).length === (page === "index.html" ? 2 : 0), "校标数量错误");
+    check((education.match(/<img\b/g) || []).length === 2, "校标数量错误");
+    check(education.includes("assets/logos/cqu-seal.png"), "未使用圆形重庆大学校徽");
     check(!education.includes("eie.png"), "院徽仍出现在页面上");
   }
   check(runView(page, "en", false, true).observed === 0, "减少动态设置未生效");

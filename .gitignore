@@ -4,6 +4,7 @@ private/
 tmp/
 node_modules/
 *.pdf
+!/assets/Qidong-Sun-CV.pdf
 *.docx
 *.zip
 *.log

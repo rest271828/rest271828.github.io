@@ -1,5 +1,4 @@
 const data = window.SITE_DATA;
-const isCv = document.body.dataset.view === "cv";
 
 // 本地语言设置只保存 en 或 zh；浏览器禁用存储时仍能正常使用。
 let currentLang = "en";
@@ -57,7 +56,7 @@ function renderTheme() {
 
 function linksMarkup(links) {
   return links.filter((link) => link && validUrl(link.url))
-    .map((link) => `<a href="${escapeHtml(link.url)}" rel="noreferrer noopener">${icon(link.icon)}${escapeHtml(link.label)}</a>`).join("");
+    .map((link) => `<a href="${escapeHtml(link.url)}"${link.download ? " download" : ""} rel="noreferrer noopener">${icon(link.icon)}${escapeHtml(link.label)}</a>`).join("");
 }
 
 function techMarkup(items = []) {
@@ -82,11 +81,9 @@ function renderPage() {
   const content = data[currentLang];
   const isChinese = currentLang === "zh";
   document.documentElement.lang = isChinese ? "zh-CN" : "en";
-  document.title = `${content.name} | ${isCv ? content.cvTitle : "Robotics & Robot Learning"}`;
+  document.title = `${content.name} | Robotics & Robot Learning`;
   document.querySelector('meta[name="description"]').content = content.summary;
   writeText("site-title", content.name);
-  writeText("hero-label", isCv ? content.cvTitle : content.siteLabel);
-  writeText("hero-name", isChinese ? `${content.name} / ${content.chineseName}` : content.name);
   writeText("hero-subtitle", content.subtitle);
   writeText("hero-summary", content.summary);
   writeText("profile-name", content.name);
@@ -103,14 +100,11 @@ function renderPage() {
   toggle.textContent = isChinese ? "EN" : "中文";
   toggle.lang = isChinese ? "en" : "zh-CN";
   toggle.setAttribute("aria-label", isChinese ? "Switch to English" : "切换为中文");
-  document.getElementById("main-nav").innerHTML = isCv
-    ? `<a href="index.html">${escapeHtml(content.back)}</a>`
-    : linksMarkup([
+  document.getElementById("main-nav").innerHTML = linksMarkup([
       ...Object.entries(content.nav).map(([id, label]) => ({ label, url: `#${id}` })),
-      { label: content.buttons.cv, url: data.cv }
+      { label: content.buttons.cv, url: data.cv, download: true }
     ]);
   renderTheme();
-  writeText("print-cv", content.print);
 
   document.querySelectorAll("[data-section-title]").forEach((heading) => {
     heading.textContent = content.sections[heading.dataset.sectionTitle];
@@ -124,14 +118,14 @@ function renderPage() {
   }
 
   document.getElementById("hero-links").innerHTML = linksMarkup([
-    { label: isCv ? data.email : content.buttons.email, url: `mailto:${data.email}`, icon: !isCv && "mail" },
-    { label: content.buttons.github, url: data.github, icon: !isCv && "github" },
-    !isCv && { label: content.buttons.cv, url: data.cv, icon: "file" }
+    { label: content.buttons.email, url: `mailto:${data.email}`, icon: "mail" },
+    { label: content.buttons.github, url: data.github, icon: "github" },
+    { label: content.buttons.cv, url: data.cv, icon: "file", download: true }
   ]);
 
   document.getElementById("education-list").innerHTML = content.education.map((item) => `
     <article class="education-item">
-      <div class="education-logo-set">${!isCv && validUrl(item.logo)
+      <div class="education-logo-set">${validUrl(item.logo)
         ? `<img class="education-logo" src="${escapeHtml(item.logo)}" alt="" width="92" height="48" />` : ""}</div>
       <div class="education-main">
         <div class="entry-heading"><h3>${escapeHtml(item.school)}</h3><p class="education-time">${escapeHtml(item.time)}</p></div>
@@ -178,7 +172,6 @@ document.getElementById("lang-toggle").addEventListener("click", () => {
   try { localStorage.setItem("siteLanguage", currentLang); } catch { /* 不影响切换。 */ }
   renderPage();
 });
-document.getElementById("print-cv")?.addEventListener("click", () => window.print());
 document.getElementById("theme-toggle")?.addEventListener("click", () => {
   theme = theme === "dark" ? "light" : "dark";
   try { localStorage.setItem("siteTheme", theme); } catch { /* 不影响切换。 */ }
@@ -187,7 +180,7 @@ document.getElementById("theme-toggle")?.addEventListener("click", () => {
 renderPage();
 
 // 仅在支持观察器且未开启减少动态效果时启用滚动渐入；失败不会隐藏内容。
-if (!isCv && "IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
