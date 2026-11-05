@@ -3,30 +3,33 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- 仅加载本站资源：不接入统计追踪、第三方脚本或数据上传接口。 -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'" />
+    <meta name="referrer" content="no-referrer" />
     <meta
       name="description"
       content="Qidong Sun's academic and engineering portfolio in robotics, robot learning, reinforcement learning, and quadruped locomotion."
     />
     <title>Qidong Sun</title>
-    <link rel="stylesheet" href="styles.css?v=20260629-edu2" />
+    <link rel="canonical" href="https://rest271828.github.io/" />
+    <link rel="stylesheet" href="styles.css?v=20261105" />
   </head>
   <body>
+    <a class="skip-link" href="#home">Skip to content / 跳转到正文</a>
     <div class="page">
       <header class="topbar">
         <a class="site-title" href="#home" id="site-title">Qidong Sun</a>
         <div class="nav-wrap">
           <nav aria-label="Main navigation" id="main-nav"></nav>
           <button class="lang-toggle" id="lang-toggle" type="button" aria-label="Switch language">
-            涓枃
+            中文
           </button>
         </div>
       </header>
 
       <main id="home">
         <section class="hero" aria-labelledby="hero-name">
-          <div class="portrait" aria-label="Profile photo placeholder">
-            <span id="portrait-initial">Q</span>
-          </div>
+          <div class="portrait" hidden></div>
           <div class="hero-copy">
             <p class="small-label" id="hero-label"></p>
             <h1 id="hero-name">Qidong Sun</h1>
@@ -48,7 +51,12 @@
 
         <section id="interests">
           <h2 data-section-title="interests"></h2>
-          <div class="tag-grid" id="interest-list"></div>
+          <div class="interest-list" id="interest-list"></div>
+        </section>
+
+        <section id="research">
+          <h2 data-section-title="research"></h2>
+          <div class="item-list" id="research-list"></div>
         </section>
 
         <section id="projects">
@@ -56,9 +64,9 @@
           <div class="project-list" id="project-list"></div>
         </section>
 
-        <section id="experience">
-          <h2 data-section-title="experience"></h2>
-          <div class="item-list" id="experience-list"></div>
+        <section id="patents">
+          <h2 data-section-title="patents"></h2>
+          <div class="item-list" id="patent-list"></div>
         </section>
 
         <section id="skills">
@@ -82,6 +90,7 @@
           <p class="links" id="contact-links"></p>
         </section>
       </main>
+      <noscript><p>This page needs JavaScript. Contact: sunqidong152@gmail.com</p></noscript>
 
       <footer>
         <span id="footer-updated"></span>
@@ -89,8 +98,9 @@
       </footer>
     </div>
 
-    <script src="site-data.js?v=20260629-edu2"></script>
-    <script src="script.js?v=20260629-edu2"></script>
+    <!-- 内容修改 site-data.js；排版修改 styles.css；逻辑修改 script.js。 -->
+    <script src="site-data.js?v=20261105"></script>
+    <script src="script.js?v=20261105"></script>
   </body>
 </html>
 

@@ -1,167 +1,160 @@
-﻿const data = window.SITE_DATA;
+const data = window.SITE_DATA;
+const isCv = document.body.dataset.view === "cv";
 
-let currentLang = localStorage.getItem("siteLanguage") || "en";
+// 本地语言设置只保存 en 或 zh；浏览器禁用存储时仍能正常使用。
+let currentLang = "en";
+try {
+  const saved = localStorage.getItem("siteLanguage");
+  if (saved === "en" || saved === "zh") currentLang = saved;
+} catch { /* 隐私模式下无需持久化设置。 */ }
 
-const validUrl = (url) => url && url.trim() !== "";
-const language = () => data[currentLang];
-const displayName = (content) => (content.chineseName ? `${content.name} / ${content.chineseName}` : content.name);
+const escapeHtml = (value = "") => String(value).replace(/[&<>"']/g, (char) =>
+  ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
 
-function renderLinks(targetId, links, asButtons = false) {
-  const className = asButtons ? ' class="button"' : "";
-  document.getElementById(targetId).innerHTML = links
-    .filter(Boolean)
-    .map((link) => `<a${className} href="${link.url}" rel="noreferrer">${link.label}</a>`)
-    .join("");
+// 编辑数据时不能把脚本协议或空占位链接带入页面。
+function validUrl(value) {
+  if (typeof value !== "string" || !value.trim() || value === "#") return false;
+  try {
+    const url = new URL(value, window.location.href);
+    return url.protocol === "https:" || url.protocol === "mailto:" ||
+      (url.origin === window.location.origin && ["http:", "file:"].includes(url.protocol));
+  } catch { return false; }
 }
 
-function renderListWithTime(targetId, items) {
-  document.getElementById(targetId).innerHTML = items
-    .map(
-      (item) => `
-        <li>
-          <span class="list-time">${item.time}</span>
-          <span>${item.title}</span>
-        </li>
-      `
-    )
-    .join("");
+const writeText = (id, value) => {
+  const node = document.getElementById(id);
+  if (node) node.textContent = value;
+};
+
+function linksMarkup(links) {
+  return links.filter((link) => link && validUrl(link.url))
+    .map((link) => `<a href="${escapeHtml(link.url)}" rel="noreferrer noopener">${escapeHtml(link.label)}</a>`).join("");
+}
+
+function techMarkup(items = []) {
+  return `<p class="tech-list">${items.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</p>`;
+}
+
+function renderEntries(id, entries) {
+  document.getElementById(id).innerHTML = entries.map((item) => `
+    <article class="text-item">
+      <p class="item-time">${escapeHtml(item.time)}</p>
+      <div>
+        <h3>${escapeHtml(item.title)}</h3>
+        ${item.affiliation ? `<p class="affiliation">${escapeHtml(item.affiliation)}</p>` : ""}
+        <p>${escapeHtml(item.description)}</p>
+        ${item.highlights ? `<ul class="highlights">${item.highlights.map((line) => `<li>${escapeHtml(line)}</li>`).join("")}</ul>` : ""}
+        ${item.tech ? techMarkup(item.tech) : ""}
+      </div>
+    </article>`).join("");
 }
 
 function renderPage() {
-  const content = language();
+  const content = data[currentLang];
   const isChinese = currentLang === "zh";
-
   document.documentElement.lang = isChinese ? "zh-CN" : "en";
-  document.title = `${content.name} - Homepage`;
-  document.getElementById("site-title").textContent = content.name;
-  document.getElementById("hero-label").textContent = content.siteLabel;
-  document.getElementById("hero-name").textContent = isChinese ? displayName(content) : content.name;
-  document.getElementById("hero-subtitle").textContent = content.subtitle;
-  document.getElementById("hero-summary").textContent = content.summary;
-  document.getElementById("about-text").textContent = content.about;
-  document.getElementById("footer-updated").textContent = content.updated;
-  document.getElementById("lang-toggle").textContent = isChinese ? "EN" : "中文";
+  document.title = `${content.name} | ${isCv ? content.cvTitle : "Robotics & Robot Learning"}`;
+  document.querySelector('meta[name="description"]').content = content.summary;
+  writeText("site-title", content.name);
+  writeText("hero-label", isCv ? content.cvTitle : content.siteLabel);
+  writeText("hero-name", isChinese ? `${content.name} / ${content.chineseName}` : content.name);
+  writeText("hero-subtitle", content.subtitle);
+  writeText("hero-summary", content.summary);
+  writeText("about-text", content.about);
+  writeText("footer-updated", content.updated);
 
-  document.getElementById("main-nav").innerHTML = Object.entries(content.nav)
-    .map(([id, label]) => `<a href="#${id}">${label}</a>`)
-    .join("");
+  const toggle = document.getElementById("lang-toggle");
+  toggle.textContent = isChinese ? "EN" : "中文";
+  toggle.lang = isChinese ? "en" : "zh-CN";
+  toggle.setAttribute("aria-label", isChinese ? "Switch to English" : "切换为中文");
+  document.getElementById("main-nav").innerHTML = isCv
+    ? `<a href="index.html">${escapeHtml(content.back)}</a>`
+    : Object.entries(content.nav).map(([id, label]) => `<a href="#${escapeHtml(id)}">${escapeHtml(label)}</a>`).join("");
+  writeText("print-cv", content.print);
 
   document.querySelectorAll("[data-section-title]").forEach((heading) => {
     heading.textContent = content.sections[heading.dataset.sectionTitle];
   });
 
   const portrait = document.querySelector(".portrait");
-  if (data.avatar) {
-    portrait.innerHTML = `<img src="${data.avatar}" alt="${displayName(content)} profile photo" />`;
-  } else {
-    portrait.innerHTML = `<span id="portrait-initial">${content.name.trim().charAt(0).toUpperCase() || "Q"}</span>`;
+  if (portrait) {
+    portrait.hidden = !data.avatar;
+    document.querySelector(".hero").classList.toggle("has-portrait", Boolean(data.avatar));
+    portrait.innerHTML = data.avatar && validUrl(data.avatar)
+      ? `<img src="${escapeHtml(data.avatar)}" alt="${escapeHtml(content.name)}" width="170" height="205" />` : "";
   }
 
-  renderLinks(
-    "hero-links",
-    [
-      validUrl(data.github) && { label: content.buttons.github, url: data.github },
-      validUrl(data.email) && { label: content.buttons.email, url: `mailto:${data.email}` },
-      validUrl(data.cv) && { label: content.buttons.cv, url: data.cv },
-      { label: content.buttons.projects, url: "#projects" }
-    ],
-    true
-  );
+  document.getElementById("hero-links").innerHTML = linksMarkup([
+    { label: content.buttons.github, url: data.github },
+    { label: isCv ? data.email : content.buttons.email, url: `mailto:${data.email}` },
+    !isCv && { label: content.buttons.cv, url: data.cv },
+    !isCv && { label: content.buttons.projects, url: "#projects" }
+  ]);
 
-  document.getElementById("education-list").innerHTML = content.education
-    .map((item) => {
-      const logos = [item.logo, item.secondaryLogo].filter(validUrl);
-      return `
-        <article class="education-item">
-          <div class="education-logo-set">
-            ${logos.map((logo) => `<img class="education-logo" src="${logo}" alt="${item.school} logo" loading="lazy" />`).join("")}
-          </div>
-          <div class="education-main">
-            <h3>${item.school}</h3>
-            <p class="education-degree">${item.degree}</p>
-            <p>${item.detail}</p>
-            ${item.note ? `<p class="education-note">${item.note}</p>` : ""}
-          </div>
-          <div class="education-time">${item.time}</div>
-        </article>
-      `;
-    })
-    .join("");
+  document.getElementById("education-list").innerHTML = content.education.map((item) => `
+    <article class="education-item">
+      <div class="education-logo-set">${[item.logo, item.secondaryLogo].filter(validUrl).map((logo, index) =>
+        `<img class="education-logo" src="${escapeHtml(logo)}" alt="${escapeHtml(index ? "ELITE INSTITUTE OF ENGINEERING" : item.school)}" loading="lazy" />`).join("")}</div>
+      <div class="education-main">
+        <div class="entry-heading"><h3>${escapeHtml(item.school)}</h3><p class="education-time">${escapeHtml(item.time)}</p></div>
+        <p class="location">${escapeHtml(item.location)}</p>
+        <p class="education-degree">${escapeHtml(item.degree)}</p>
+        <p>${escapeHtml(item.detail)}</p>
+        <p class="education-note">${escapeHtml(item.note)}</p>
+      </div>
+    </article>`).join("");
 
-  document.getElementById("interest-list").innerHTML = content.interests
-    .map((interest) => `<span class="tag">${interest}</span>`)
-    .join("");
+  document.getElementById("interest-list").innerHTML = content.interests.map((item) =>
+    `<span>${escapeHtml(item)}</span>`).join("");
+  renderEntries("research-list", content.research);
+  renderEntries("patent-list", content.patents);
 
-  document.getElementById("project-list").innerHTML = content.projects
-    .map(
-      (project) => `
-        <article class="project-item">
-          <div class="project-media">
-            <img src="${project.image}" alt="${project.title}" loading="lazy" />
-          </div>
-          <div>
-            <p class="item-time">${project.time}</p>
-            <h3>${project.title}</h3>
-            <p>${project.description}</p>
-            <p class="tech-list">${project.tech.map((item) => `<span>${item}</span>`).join("")}</p>
-            <p class="links">
-              ${project.links
-                .filter((link) => validUrl(link.url))
-                .map((link) => `<a href="${link.url}" rel="noreferrer">${link.label}</a>`)
-                .join("")}
-            </p>
-          </div>
-        </article>
-      `
-    )
-    .join("");
+  document.getElementById("project-list").innerHTML = content.projects.map((project) => {
+    const links = linksMarkup(project.links);
+    return `<article class="project-item ${project.image ? "has-media" : ""}">
+      ${project.image && validUrl(project.image) ? `<div class="project-media"><img src="${escapeHtml(project.image)}" alt="${escapeHtml(project.imageAlt || project.title)}" loading="lazy" /></div>` : ""}
+      <div class="project-copy">
+        <div class="entry-heading"><h3>${escapeHtml(project.title)}</h3><p class="item-time">${escapeHtml(project.time)}</p></div>
+        <p>${escapeHtml(project.description)}</p>
+        ${techMarkup(project.tech)}
+        ${links ? `<p class="links">${links}</p>` : ""}
+      </div>
+    </article>`;
+  }).join("");
 
-  document.getElementById("experience-list").innerHTML = content.experience
-    .map(
-      (item) => `
-        <article class="text-item">
-          <div class="item-time">${item.time}</div>
-          <div>
-            <h3>${item.title}</h3>
-            <p>${item.description}</p>
-          </div>
-        </article>
-      `
-    )
-    .join("");
-
-  document.getElementById("skill-list").innerHTML = content.skills
-    .map(
-      (group) => `
-        <article class="skill-row">
-          <h3>${group.title}</h3>
-          <p>${group.items.map((item) => `<span>${item}</span>`).join("")}</p>
-        </article>
-      `
-    )
-    .join("");
-
-  document.getElementById("certificate-list").innerHTML = content.certificates
-    .map((item) => `<li>${item}</li>`)
-    .join("");
-
-  renderListWithTime("award-list", content.awards);
-
-  document.getElementById("contact-text").textContent = content.contact;
-  renderLinks("contact-links", [
-    validUrl(data.email) && { label: data.email, url: `mailto:${data.email}` },
-    validUrl(data.github) && { label: "GitHub: rest271828", url: data.github },
-    validUrl(data.linkedin) && { label: "LinkedIn", url: data.linkedin },
-    validUrl(data.cv) && { label: "CV", url: data.cv }
+  document.getElementById("skill-list").innerHTML = content.skills.map((group) => `
+    <div class="skill-row"><h3>${escapeHtml(group.title)}</h3><p>${group.items.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</p></div>`).join("");
+  document.getElementById("certificate-list").innerHTML = content.certificates.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+  document.getElementById("award-list").innerHTML = content.awards.map((item) =>
+    `<li><span class="list-time">${escapeHtml(item.time)}</span><span>${escapeHtml(item.title)}</span></li>`).join("");
+  writeText("contact-text", content.contact);
+  document.getElementById("contact-links").innerHTML = linksMarkup([
+    { label: data.email, url: `mailto:${data.email}` },
+    { label: "GitHub", url: data.github },
+    { label: "LinkedIn", url: data.linkedin }
   ]);
 }
 
 document.getElementById("lang-toggle").addEventListener("click", () => {
   currentLang = currentLang === "en" ? "zh" : "en";
-  localStorage.setItem("siteLanguage", currentLang);
+  try { localStorage.setItem("siteLanguage", currentLang); } catch { /* 不影响切换。 */ }
   renderPage();
 });
-
+document.getElementById("print-cv")?.addEventListener("click", () => window.print());
 renderPage();
 
-
+// 仅在支持观察器且未开启减少动态效果时启用滚动渐入；失败不会隐藏内容。
+if (!isCv && "IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.06 });
+  document.querySelectorAll("main > section:not(.hero)").forEach((section) => {
+    section.classList.add("reveal");
+    observer.observe(section);
+  });
+}

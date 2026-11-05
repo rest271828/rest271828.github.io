@@ -1,0 +1,13 @@
+# 申请原件、临时资料与本地测试结果不应进入公开仓库。
+files/
+private/
+tmp/
+node_modules/
+*.pdf
+*.docx
+*.zip
+*.log
+.env
+.env.*
+playwright-report/
+test-results/

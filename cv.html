@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Qidong Sun — public curriculum vitae in robotics and robot learning." />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'" />
+    <meta name="referrer" content="no-referrer" />
+    <title>Qidong Sun | Curriculum Vitae</title>
+    <link rel="stylesheet" href="styles.css?v=20261105" />
+  </head>
+  <body class="cv-page" data-view="cv">
+    <!-- 公开版简历与首页共用 site-data.js，不读取申请文件夹里的任何文件。 -->
+    <div class="page">
+      <header class="topbar">
+        <a class="site-title" href="index.html" id="site-title">Qidong Sun</a>
+        <div class="nav-wrap">
+          <nav id="main-nav" aria-label="Navigation"></nav>
+          <button class="print-button" id="print-cv" type="button">Print / Save PDF</button>
+          <button class="lang-toggle" id="lang-toggle" type="button" aria-label="切换为中文">中文</button>
+        </div>
+      </header>
+      <main>
+        <section class="hero" aria-labelledby="hero-name">
+          <p class="small-label" id="hero-label"></p>
+          <h1 id="hero-name">Qidong Sun</h1>
+          <p class="subtitle" id="hero-subtitle"></p>
+          <p id="hero-summary"></p>
+          <p class="links" id="hero-links"></p>
+        </section>
+        <section id="about"><h2 data-section-title="about"></h2><p id="about-text"></p></section>
+        <section id="education"><h2 data-section-title="education"></h2><div class="education-list" id="education-list"></div></section>
+        <section id="interests"><h2 data-section-title="interests"></h2><div class="interest-list" id="interest-list"></div></section>
+        <section id="research"><h2 data-section-title="research"></h2><div class="item-list" id="research-list"></div></section>
+        <section id="projects"><h2 data-section-title="projects"></h2><div class="project-list" id="project-list"></div></section>
+        <section id="patents"><h2 data-section-title="patents"></h2><div class="item-list" id="patent-list"></div></section>
+        <section id="skills"><h2 data-section-title="skills"></h2><div id="skill-list"></div></section>
+        <section id="certificates"><h2 data-section-title="certificates"></h2><ul class="plain-list" id="certificate-list"></ul></section>
+        <section id="awards"><h2 data-section-title="awards"></h2><ul class="plain-list" id="award-list"></ul></section>
+        <section id="contact"><h2 data-section-title="contact"></h2><p id="contact-text"></p><p class="links" id="contact-links"></p></section>
+      </main>
+      <footer><span id="footer-updated"></span></footer>
+    </div>
+    <noscript>This page needs JavaScript. Contact: sunqidong152@gmail.com</noscript>
+    <script src="site-data.js?v=20261105"></script>
+    <script src="script.js?v=20261105"></script>
+  </body>
+</html>
