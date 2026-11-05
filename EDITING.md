@@ -5,7 +5,7 @@
 ## 最常修改的文件
 
 - `site-data.js`：姓名、介绍、教育、日期、研究、项目、技能、奖项和邮箱。英文在 `en`，中文在 `zh`。修改时同步维护两种语言。
-- `styles.css`：字体、灰色背景、双栏布局和轻量滑动效果。首页设计参考 [Academic Pages](https://academicpages.github.io/)。
+- `styles.css`：字体、深灰背景、双栏布局和章节滑动效果。首次打开是深灰和英文，访客可自行切换。首页设计参考 [Academic Pages](https://academicpages.github.io/)。
 - `index.html`：资料侧栏和主页章节顺序。侧栏内容在 `site-data.js` 的 `profile` 中维护。
 - `assets/Qidong-Sun-CV.pdf`：保留原 Overleaf 排版的一页公开简历。顶部和侧栏直接下载此文件。
 - `assets/logos/`：重庆大学圆形校徽和 SUTD 校标；不展示横版重庆大学校名图或院徽。

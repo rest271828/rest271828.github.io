@@ -37,10 +37,10 @@ const icon = (name) => iconPaths[name]
   ? `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${iconPaths[name]}</svg>`
   : "";
 
-let theme = "light";
+let theme = "dark";
 try {
-  if (localStorage.getItem("siteTheme") === "dark") theme = "dark";
-} catch { /* 隐私模式下使用默认浅色。 */ }
+  if (localStorage.getItem("siteTheme") === "light") theme = "light";
+} catch { /* 隐私模式下使用默认深灰。 */ }
 
 function renderTheme() {
   const button = document.getElementById("theme-toggle");
@@ -188,7 +188,7 @@ if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-mot
         ? "visible"
         : entry.boundingClientRect.bottom <= top ? "above" : "below";
     });
-  }, { rootMargin: "-18px 0px -20px", threshold: 0 });
+  }, { rootMargin: "-92px 0px -96px", threshold: 0 });
   document.querySelectorAll("main > section:not(.intro)").forEach((section) => {
     section.classList.add("reveal");
     observer.observe(section);

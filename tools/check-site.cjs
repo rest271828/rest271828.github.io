@@ -32,6 +32,7 @@ check(!data.avatar || files.includes(data.avatar), "公开头像未列入发布�
 for (const lang of ["en", "zh"]) {
   const content = data[lang];
   check(content.education.length === 2, "教育条目缺失");
+  check(content.education[0].degree.includes("RA") && content.about.includes("RA"), "SUTD 研究助理经历缺失");
   for (const section of ["education", "research", "projects", "patents", "awards"]) {
     check(content[section].every((item) => typeof item.time === "string"), "日期字段缺失：" + section);
   }
@@ -127,8 +128,10 @@ themed.nodes.get("theme-toggle").events.click();
 check(themed.document.documentElement.dataset.theme === "light", "主题切换失败");
 check(themed.nodes.get("theme-toggle").attributes["aria-pressed"] === "false", "主题按钮状态错误");
 const privateView = runView("index.html", "en", true);
+check(privateView.document.documentElement.dataset.theme === "dark", "首次访问应使用深灰主题");
 privateView.nodes.get("theme-toggle").events.click();
-check(privateView.document.documentElement.dataset.theme === "dark", "禁用存储时无法切换主题");
+check(privateView.document.documentElement.dataset.theme === "light", "禁用存储时无法切换主题");
+check(runView("index.html", "zh", false, false, "light").document.documentElement.dataset.theme === "light", "访客已保存的主题未保留");
 
 // 防止后续编辑内容时意外注入 HTML 或脚本链接。
 const title = data.en.projects[0].title;

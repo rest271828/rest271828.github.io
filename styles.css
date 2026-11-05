@@ -118,18 +118,19 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
 .skip-link { position: fixed; left: 12px; top: -90px; z-index: 10; background: #fff; padding: 10px 16px; border: 1px solid var(--link); }
 .skip-link:focus { top: 10px; }
 .reveal > * {
-  transition: opacity 380ms ease, transform 380ms cubic-bezier(.2, .75, .25, 1);
+  transition: opacity 460ms ease, transform 460ms cubic-bezier(.22, .65, .25, 1);
 }
-.reveal[data-motion="below"] > * { opacity: .3; transform: translateY(14px); }
-.reveal[data-motion="above"] > * { opacity: .3; transform: translateY(-14px); }
+.reveal[data-motion="visible"] > * { transition-duration: 640ms; }
+.reveal[data-motion="below"] > * { opacity: .08; transform: translateY(42px); }
+.reveal[data-motion="above"] > * { opacity: .08; transform: translateY(-36px); }
 .reveal:target > *, .reveal:focus-within > * { opacity: 1; transform: none; }
 
 @keyframes enter-intro {
-  from { opacity: .68; transform: translateY(10px); }
+  from { opacity: .1; transform: translateY(38px); }
   to { opacity: 1; transform: none; }
 }
 @keyframes enter-profile {
-  from { opacity: .68; transform: translateX(-10px); }
+  from { opacity: .1; transform: translateX(-30px); }
   to { opacity: 1; transform: none; }
 }
 
@@ -178,13 +179,13 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
 }
 [data-theme="dark"] .home-page {
   color-scheme: dark;
-  --surface: #242729;
-  --masthead: #2a2e30;
-  --footer: #292d2f;
-  --text: #edf0f1;
-  --muted: #b8c0c4;
+  --surface: #3c3c3c;
+  --masthead: #373737;
+  --footer: #343434;
+  --text: #f1f1f1;
+  --muted: #c8c8c8;
   --link: #9edbe5;
-  --line: #454b4e;
+  --line: #575757;
   --accent: #79c6d2;
 }
 .site-header { background: var(--masthead); border-bottom: 1px solid var(--line); }
@@ -242,7 +243,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
   color: var(--muted);
   font-size: 14px;
   overflow-wrap: anywhere;
-  animation: enter-profile 470ms cubic-bezier(.2, .75, .25, 1) both;
+  animation: enter-profile 690ms cubic-bezier(.2, .75, .25, 1) both;
 }
 .profile::before { content: ""; display: block; width: 30px; height: 3px; margin-bottom: 16px; background: var(--accent); }
 .profile .portrait { margin-bottom: 14px; border: 3px solid var(--surface); outline: 1px solid var(--line); }
@@ -256,7 +257,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
 .profile-links a:hover { color: var(--link); }
 .profile-links svg { flex: none; color: var(--muted); }
 .home-page main > section { margin-bottom: 38px; }
-.home-page main > .intro { margin-bottom: 32px; animation: enter-intro 490ms cubic-bezier(.2, .75, .25, 1) both; }
+.home-page main > .intro { margin-bottom: 32px; animation: enter-intro 720ms cubic-bezier(.2, .75, .25, 1) both; }
 .home-page h1 { font-size: 33px; line-height: 1.16; font-weight: 750; margin-bottom: 12px; }
 .home-page h2 {
   display: block;
@@ -277,14 +278,13 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
   width: 94px;
   height: 48px;
   object-fit: contain;
-  background: #fff;
-  border-radius: 4px;
 }
+/* 保留 PNG 的透明通道；深灰主题用浅色校徽提高对比。 */
+[data-theme="dark"] .home-page .education-logo { filter: brightness(0) invert(.94); }
 .home-page .education-logo[src$="cqu-seal.png"] {
   width: 54px;
   height: 54px;
   margin-inline: auto;
-  border-radius: 50%;
 }
 .home-page .education-main h3 { font-size: 17px; margin-bottom: 3px; }
 .home-page .education-time { font-size: 13px; }
@@ -324,7 +324,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
   .site-header nav { grid-row: 2; grid-column: 1 / -1; }
   .site-header .nav-wrap { grid-row: 1; grid-column: 2; }
   .site-layout { grid-template-columns: minmax(0, 1fr); gap: 26px; padding-top: 23px; }
-  .profile { position: static; padding: 0 0 17px; border-bottom: 1px solid var(--line); }
+  .profile { position: static; padding: 0 0 17px; border-bottom: 1px solid var(--line); animation-name: enter-intro; }
   .profile::before { margin-bottom: 11px; }
   .profile-name { font-size: 22px; }
   .profile-visit { margin-top: 6px; }
@@ -356,6 +356,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
   h3, .education-main h3 { font-size: 12pt; break-after: avoid; }
   .hero { margin-bottom: 16px; }
   .home-page { background: #fff; color: #222; }
+  .home-page main > .intro { animation: none; }
   .reveal[data-motion] > * { opacity: 1; transform: none; }
   .education-item, .project-item.has-media { display: block; }
   .education-logo-set { display: none; }
