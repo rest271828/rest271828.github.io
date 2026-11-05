@@ -28,6 +28,7 @@ for (const name of files) {
 const dataContext = { window: {} };
 vm.runInNewContext(read("site-data.js"), dataContext);
 const data = dataContext.window.SITE_DATA;
+check(!data.avatar || files.includes(data.avatar), "公开头像未列入发布清单");
 for (const lang of ["en", "zh"]) {
   const content = data[lang];
   check(content.education.length === 2, "教育条目缺失");
@@ -68,6 +69,7 @@ function runView(page, stored = "en", blocked = false, reduced = false, savedThe
   const portrait = page === "index.html" ? node() : null;
   const sections = Array.from({ length: 10 }, node);
   let observed = 0;
+  let observeEntries;
   const document = {
     body: { dataset: { view: page === "cv.html" ? "cv" : "" } },
     documentElement: { lang: "", dataset: {} }, title: "",
@@ -79,11 +81,14 @@ function runView(page, stored = "en", blocked = false, reduced = false, savedThe
     document, URL,
     window: { SITE_DATA: data, location: new URL("https://rest271828.github.io/" + page), matchMedia: () => ({ matches: reduced }), print() {} },
     localStorage: { getItem(key) { if (blocked) throw Error("blocked"); return key === "siteTheme" ? savedTheme : stored; }, setItem() { if (blocked) throw Error("blocked"); } },
-    IntersectionObserver: class { constructor(callback) { this.callback = callback; } observe(target) { observed++; this.callback([{ target, isIntersecting: true }]); } unobserve() {} }
+    IntersectionObserver: class {
+      constructor(callback) { observeEntries = callback; }
+      observe(target) { observed++; observeEntries([{ target, isIntersecting: true }]); }
+    }
   };
   context.window.IntersectionObserver = context.IntersectionObserver;
   vm.runInNewContext(read("script.js"), context);
-  return { nodes, document, observed };
+  return { nodes, document, observed, sections, observeEntries, portrait };
 }
 {
   const page = "index.html";
@@ -108,6 +113,15 @@ function runView(page, stored = "en", blocked = false, reduced = false, savedThe
 }
 
 const themed = runView("index.html", "en", false, false, "dark");
+check(themed.portrait.hidden === true, "未设置照片时应隐藏头像位");
+const section = themed.sections[0];
+check(section.dataset.motion === "visible", "视口内章节应正常显示");
+themed.observeEntries([{ target: section, isIntersecting: false, boundingClientRect: { bottom: 10 }, rootBounds: { top: 18 } }]);
+check(section.dataset.motion === "above", "向上离开时未触发滑出");
+themed.observeEntries([{ target: section, isIntersecting: false, boundingClientRect: { bottom: 900 }, rootBounds: { top: 18 } }]);
+check(section.dataset.motion === "below", "向下离开时未触发滑出");
+themed.observeEntries([{ target: section, isIntersecting: true }]);
+check(section.dataset.motion === "visible", "再次进入时未恢复显示");
 check(themed.document.documentElement.dataset.theme === "dark", "未恢复深色主题");
 themed.nodes.get("theme-toggle").events.click();
 check(themed.document.documentElement.dataset.theme === "light", "主题切换失败");

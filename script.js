@@ -179,16 +179,16 @@ document.getElementById("theme-toggle")?.addEventListener("click", () => {
 });
 renderPage();
 
-// 仅在支持观察器且未开启减少动态效果时启用滚动渐入；失败不会隐藏内容。
+// 观察不位移的章节外层，让正文进出视口时滑动，避免边缘反复触发。
 if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("is-visible");
-        observer.unobserve(entry.target);
-      }
+      const top = entry.rootBounds?.top ?? 0;
+      entry.target.dataset.motion = entry.isIntersecting
+        ? "visible"
+        : entry.boundingClientRect.bottom <= top ? "above" : "below";
     });
-  }, { threshold: 0.06 });
+  }, { rootMargin: "-18px 0px -20px", threshold: 0 });
   document.querySelectorAll("main > section:not(.intro)").forEach((section) => {
     section.classList.add("reveal");
     observer.observe(section);
