@@ -272,7 +272,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
 .home-page #about-text { margin-bottom: 0; }
 .home-page .education-list { gap: 20px; }
 .home-page .education-item { grid-template-columns: 94px minmax(0, 1fr); gap: 21px; }
-.home-page .education-logo-set { display: block; padding-top: 0; }
+.home-page .education-logo-set { display: block; align-self: center; padding-top: 0; }
 .home-page .education-logo {
   display: block;
   width: 94px;
@@ -282,8 +282,8 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
 /* 保留 PNG 的透明通道；深灰主题用浅色校徽提高对比。 */
 [data-theme="dark"] .home-page .education-logo { filter: brightness(0) invert(.94); }
 .home-page .education-logo[src$="cqu-seal.png"] {
-  width: 74px;
-  height: 74px;
+  width: 90px;
+  height: 90px;
   margin-inline: auto;
 }
 .home-page .education-main h3 { font-size: 17px; margin-bottom: 3px; }
