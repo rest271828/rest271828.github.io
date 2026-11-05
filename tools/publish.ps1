@@ -23,7 +23,7 @@ foreach ($file in ($publicFiles + $sourceFiles)) {
 }
 
 # 撤下旧的公开 CV 副本和不对应项目的配图；历史提交不在此处重写。
-git -C $checkout rm --ignore-unmatch -- "files/cv.pdf" "assets/logos/eie.svg" "media/hope_jr/hopejr.png" "media/lekiwi/kiwi.webp" "media/so100/leader_follower.webp" "media/so101/so101.webp"
+git -C $checkout rm --ignore-unmatch -- "files/cv.pdf" "assets/logos/eie.svg" "assets/logos/eie.png" "media/hope_jr/hopejr.png" "media/lekiwi/kiwi.webp" "media/so100/leader_follower.webp" "media/so101/so101.webp"
 if ($LASTEXITCODE -ne 0) { throw "撤下旧资源失败。" }
 $tracked = @(git -C $checkout ls-files)
 if ($tracked | Where-Object { $_ -match '\.(pdf|docx?|zip)$' }) {

@@ -32,7 +32,8 @@ for (const lang of ["en", "zh"]) {
     check(content[section].every((item) => typeof item.time === "string"), "日期字段缺失：" + section);
   }
   for (const item of content.education) {
-    for (const logo of [item.logo, item.secondaryLogo].filter(Boolean)) check(files.includes(logo), "标志未列入发布清单");
+    check(files.includes(item.logo), "学校标志未列入发布清单");
+    check(!item.secondaryLogo, "不应显示学院附加标志");
   }
   for (const item of content.projects) {
     if (item.image) check(files.includes(item.image), "项目图未列入发布清单");
@@ -42,9 +43,10 @@ for (const lang of ["en", "zh"]) {
 }
 check(data.cv === "cv.html", "简历不应指向申请 PDF");
 check(!files.includes("files/cv.pdf"), "旧 CV 仍在发布清单");
+check(!files.includes("assets/logos/eie.png"), "院徽仍在发布清单");
 
 // 使用轻量 DOM 替身检查渲染逻辑，不宣称它能替代真实浏览器布局检查。
-function runView(page, stored = "en", blocked = false, reduced = false) {
+function runView(page, stored = "en", blocked = false, reduced = false, savedTheme = null) {
   const html = read(page);
   const nodes = new Map();
   const node = () => ({
@@ -64,7 +66,7 @@ function runView(page, stored = "en", blocked = false, reduced = false) {
   let observed = 0;
   const document = {
     body: { dataset: { view: page === "cv.html" ? "cv" : "" } },
-    documentElement: { lang: "" }, title: "",
+    documentElement: { lang: "", dataset: {} }, title: "",
     getElementById: (id) => nodes.get(id) || null,
     querySelector: (selector) => selector === ".portrait" ? portrait : node(),
     querySelectorAll: (selector) => selector === "[data-section-title]" ? headings : sections
@@ -72,7 +74,7 @@ function runView(page, stored = "en", blocked = false, reduced = false) {
   const context = {
     document, URL,
     window: { SITE_DATA: data, location: new URL("https://rest271828.github.io/" + page), matchMedia: () => ({ matches: reduced }), print() {} },
-    localStorage: { getItem() { if (blocked) throw Error("blocked"); return stored; }, setItem() { if (blocked) throw Error("blocked"); } },
+    localStorage: { getItem(key) { if (blocked) throw Error("blocked"); return key === "siteTheme" ? savedTheme : stored; }, setItem() { if (blocked) throw Error("blocked"); } },
     IntersectionObserver: class { constructor(callback) { this.callback = callback; } observe(target) { observed++; this.callback([{ target, isIntersecting: true }]); } unobserve() {} }
   };
   context.window.IntersectionObserver = context.IntersectionObserver;
@@ -84,15 +86,27 @@ for (const page of ["index.html", "cv.html"]) {
     const view = runView(page, ...settings);
     const initialChinese = settings[0] === "zh";
     check(view.document.documentElement.lang === (initialChinese ? "zh-CN" : "en"), "初始语言错误");
-    if (!initialChinese) check(view.nodes.get("hero-name").textContent === "Qidong Sun", "英文姓名重复");
+    if (!initialChinese) check(view.nodes.get(page === "index.html" ? "profile-name" : "hero-name").textContent === "Qidong Sun", "英文姓名重复");
     view.nodes.get("lang-toggle").events.click();
     check(view.document.documentElement.lang === (initialChinese ? "en" : "zh-CN"), "切换语言失败");
     check(!view.nodes.get("hero-links").innerHTML.includes("files/cv.pdf"), "出现原始 CV 下载");
     check(!view.nodes.get("contact-links").innerHTML.includes("LinkedIn"), "出现空 LinkedIn 按钮");
     check(view.nodes.get("research-list").innerHTML.includes("0.143"), "研究条目未渲染");
+    const education = view.nodes.get("education-list").innerHTML;
+    check((education.match(/<img\b/g) || []).length === (page === "index.html" ? 2 : 0), "校标数量错误");
+    check(!education.includes("eie.png"), "院徽仍出现在页面上");
   }
   check(runView(page, "en", false, true).observed === 0, "减少动态设置未生效");
 }
+
+const themed = runView("index.html", "en", false, false, "dark");
+check(themed.document.documentElement.dataset.theme === "dark", "未恢复深色主题");
+themed.nodes.get("theme-toggle").events.click();
+check(themed.document.documentElement.dataset.theme === "light", "主题切换失败");
+check(themed.nodes.get("theme-toggle").attributes["aria-pressed"] === "false", "主题按钮状态错误");
+const privateView = runView("index.html", "en", true);
+privateView.nodes.get("theme-toggle").events.click();
+check(privateView.document.documentElement.dataset.theme === "dark", "禁用存储时无法切换主题");
 
 // 防止后续编辑内容时意外注入 HTML 或脚本链接。
 const title = data.en.projects[0].title;

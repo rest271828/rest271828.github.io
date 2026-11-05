@@ -5,10 +5,10 @@
 ## 最常修改的文件
 
 - `site-data.js`：姓名、介绍、教育、日期、研究、项目、技能、奖项和邮箱。英文在 `en`，中文在 `zh`。修改时同步维护两种语言。
-- `styles.css`：字体、字号、页面宽度、间距、手机布局与轻量渐入动效。
-- `index.html`：主页章节顺序。一般修改内容无需动这个文件。
+- `styles.css`：字体、颜色、双栏布局、手机布局与轻量渐入动效。首页设计参考 [Academic Pages](https://academicpages.github.io/)。
+- `index.html`：资料侧栏和主页章节顺序。侧栏内容在 `site-data.js` 的 `profile` 中维护。
 - `cv.html`：公开简历的排版骨架，与主页共用数据。可用浏览器的打印功能保存 PDF。
-- `assets/logos/`：学校和学院标志。
+- `assets/logos/`：重庆大学和 SUTD 的校标；不展示院徽。
 - `assets/projects/`：允许公开的真实项目截图或演示。图片路径填入项目的 `image`，没有则留空。
 
 保存后刷新本地网页即可查看变化。VS Code 的 Live Server 可以提供保存后自动刷新。

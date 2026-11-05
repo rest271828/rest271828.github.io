@@ -12,35 +12,38 @@
     />
     <title>Qidong Sun</title>
     <link rel="canonical" href="https://rest271828.github.io/" />
-    <link rel="stylesheet" href="styles.css?v=20261105" />
+    <link rel="stylesheet" href="styles.css?v=academic-1" />
   </head>
-  <body>
+  <body class="home-page">
     <a class="skip-link" href="#home">Skip to content / 跳转到正文</a>
-    <div class="page">
-      <header class="topbar">
+    <header class="site-header">
+      <div class="page topbar">
         <a class="site-title" href="#home" id="site-title">Qidong Sun</a>
+        <nav aria-label="Main navigation" id="main-nav"></nav>
         <div class="nav-wrap">
-          <nav aria-label="Main navigation" id="main-nav"></nav>
-          <button class="lang-toggle" id="lang-toggle" type="button" aria-label="Switch language">
-            中文
-          </button>
+          <button class="lang-toggle" id="lang-toggle" type="button" aria-label="切换为中文">中文</button>
+          <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Dark theme" aria-pressed="false"></button>
         </div>
-      </header>
+      </div>
+    </header>
+
+    <div class="page site-layout">
+      <!-- 个人资料来自 site-data.js；未设置公开头像时不显示占位图。 -->
+      <aside class="profile" id="profile">
+        <div class="portrait" hidden></div>
+        <p class="profile-name" id="profile-name">Qidong Sun</p>
+        <p class="profile-alternate" id="profile-alternate" hidden></p>
+        <p class="profile-role" id="profile-role"></p>
+        <p class="profile-school" id="profile-school"></p>
+        <p class="profile-visit" id="profile-visit"></p>
+        <div class="profile-links" id="hero-links"></div>
+      </aside>
 
       <main id="home">
-        <section class="hero" aria-labelledby="hero-name">
-          <div class="portrait" hidden></div>
-          <div class="hero-copy">
-            <p class="small-label" id="hero-label"></p>
-            <h1 id="hero-name">Qidong Sun</h1>
-            <p class="subtitle" id="hero-subtitle"></p>
-            <p id="hero-summary"></p>
-            <p class="button-row" id="hero-links"></p>
-          </div>
-        </section>
-
-        <section id="about">
-          <h2 data-section-title="about"></h2>
+        <section class="intro" id="about">
+          <h1 data-section-title="about">About</h1>
+          <p class="subtitle" id="hero-subtitle"></p>
+          <p id="hero-summary"></p>
           <p id="about-text"></p>
         </section>
 
@@ -90,17 +93,18 @@
           <p class="links" id="contact-links"></p>
         </section>
       </main>
-      <noscript><p>This page needs JavaScript. Contact: sunqidong152@gmail.com</p></noscript>
-
-      <footer>
-        <span id="footer-updated"></span>
-        <span>Built with GitHub Pages</span>
-      </footer>
     </div>
+    <noscript><p class="page">This page needs JavaScript. Contact: sunqidong152@gmail.com</p></noscript>
+    <footer class="site-footer">
+      <div class="page footer-inner">
+        <span id="footer-updated"></span>
+        <span>Built with GitHub Pages · Inspired by <a href="https://academicpages.github.io/">Academic Pages</a></span>
+      </div>
+    </footer>
 
     <!-- 内容修改 site-data.js；排版修改 styles.css；逻辑修改 script.js。 -->
-    <script src="site-data.js?v=20261105"></script>
-    <script src="script.js?v=20261105"></script>
+    <script src="site-data.js?v=academic-1"></script>
+    <script src="script.js?v=academic-1"></script>
   </body>
 </html>
 

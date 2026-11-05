@@ -26,9 +26,38 @@ const writeText = (id, value) => {
   if (node) node.textContent = value;
 };
 
+// 内联图标不依赖外部字体或脚本。
+const iconPaths = {
+  github: '<path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 6v-3.9a3.4 3.4 0 0 0-1-2.6c3.3-.4 6.8-1.6 6.8-7.4A5.8 5.8 0 0 0 19.2 4c.2-.4.7-1.9-.2-4 0 0-1.3-.4-4.2 1.6a14.4 14.4 0 0 0-7.6 0C4.3-.4 3 0 3 0c-.9 2.1-.4 3.6-.2 4A5.8 5.8 0 0 0 1.2 8.1c0 5.8 3.5 7 6.8 7.4a3.4 3.4 0 0 0-1 2.6V22" transform="translate(1 1) scale(.92)"/>',
+  mail: '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-9 5.7a2 2 0 0 1-2 0L2 6"/>',
+  file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8m-8 4h8"/>',
+  moon: '<path d="M20.9 13.4A9 9 0 0 1 10.6 3.1 9 9 0 1 0 20.9 13.4Z"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.4 1.4m11.2 11.2L19 19M5 19l1.4-1.4M17.6 6.4 19 5"/>'
+};
+const icon = (name) => iconPaths[name]
+  ? `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${iconPaths[name]}</svg>`
+  : "";
+
+let theme = "light";
+try {
+  if (localStorage.getItem("siteTheme") === "dark") theme = "dark";
+} catch { /* 隐私模式下使用默认浅色。 */ }
+
+function renderTheme() {
+  const button = document.getElementById("theme-toggle");
+  if (!button) return;
+  const dark = theme === "dark";
+  document.documentElement.dataset.theme = theme;
+  button.innerHTML = icon(dark ? "sun" : "moon");
+  button.setAttribute("aria-pressed", String(dark));
+  const label = currentLang === "zh" ? (dark ? "切换为浅色" : "切换为深色") : (dark ? "Switch to light theme" : "Switch to dark theme");
+  button.setAttribute("aria-label", label);
+  button.setAttribute("title", label);
+}
+
 function linksMarkup(links) {
   return links.filter((link) => link && validUrl(link.url))
-    .map((link) => `<a href="${escapeHtml(link.url)}" rel="noreferrer noopener">${escapeHtml(link.label)}</a>`).join("");
+    .map((link) => `<a href="${escapeHtml(link.url)}" rel="noreferrer noopener">${icon(link.icon)}${escapeHtml(link.label)}</a>`).join("");
 }
 
 function techMarkup(items = []) {
@@ -60,6 +89,13 @@ function renderPage() {
   writeText("hero-name", isChinese ? `${content.name} / ${content.chineseName}` : content.name);
   writeText("hero-subtitle", content.subtitle);
   writeText("hero-summary", content.summary);
+  writeText("profile-name", content.name);
+  writeText("profile-alternate", content.chineseName);
+  writeText("profile-role", content.profile.role);
+  writeText("profile-school", content.profile.school);
+  writeText("profile-visit", content.profile.visit);
+  const alternate = document.getElementById("profile-alternate");
+  if (alternate) alternate.hidden = !content.chineseName;
   writeText("about-text", content.about);
   writeText("footer-updated", content.updated);
 
@@ -69,7 +105,11 @@ function renderPage() {
   toggle.setAttribute("aria-label", isChinese ? "Switch to English" : "切换为中文");
   document.getElementById("main-nav").innerHTML = isCv
     ? `<a href="index.html">${escapeHtml(content.back)}</a>`
-    : Object.entries(content.nav).map(([id, label]) => `<a href="#${escapeHtml(id)}">${escapeHtml(label)}</a>`).join("");
+    : linksMarkup([
+      ...Object.entries(content.nav).map(([id, label]) => ({ label, url: `#${id}` })),
+      { label: content.buttons.cv, url: data.cv }
+    ]);
+  renderTheme();
   writeText("print-cv", content.print);
 
   document.querySelectorAll("[data-section-title]").forEach((heading) => {
@@ -78,23 +118,21 @@ function renderPage() {
 
   const portrait = document.querySelector(".portrait");
   if (portrait) {
-    portrait.hidden = !data.avatar;
-    document.querySelector(".hero").classList.toggle("has-portrait", Boolean(data.avatar));
-    portrait.innerHTML = data.avatar && validUrl(data.avatar)
-      ? `<img src="${escapeHtml(data.avatar)}" alt="${escapeHtml(content.name)}" width="170" height="205" />` : "";
+    portrait.hidden = !validUrl(data.avatar);
+    portrait.innerHTML = portrait.hidden ? "" :
+      `<img src="${escapeHtml(data.avatar)}" alt="${escapeHtml(content.name)}" width="128" height="128" />`;
   }
 
   document.getElementById("hero-links").innerHTML = linksMarkup([
-    { label: content.buttons.github, url: data.github },
-    { label: isCv ? data.email : content.buttons.email, url: `mailto:${data.email}` },
-    !isCv && { label: content.buttons.cv, url: data.cv },
-    !isCv && { label: content.buttons.projects, url: "#projects" }
+    { label: isCv ? data.email : content.buttons.email, url: `mailto:${data.email}`, icon: !isCv && "mail" },
+    { label: content.buttons.github, url: data.github, icon: !isCv && "github" },
+    !isCv && { label: content.buttons.cv, url: data.cv, icon: "file" }
   ]);
 
   document.getElementById("education-list").innerHTML = content.education.map((item) => `
     <article class="education-item">
-      <div class="education-logo-set">${[item.logo, item.secondaryLogo].filter(validUrl).map((logo, index) =>
-        `<img class="education-logo" src="${escapeHtml(logo)}" alt="${escapeHtml(index ? "ELITE INSTITUTE OF ENGINEERING" : item.school)}" loading="lazy" />`).join("")}</div>
+      <div class="education-logo-set">${!isCv && validUrl(item.logo)
+        ? `<img class="education-logo" src="${escapeHtml(item.logo)}" alt="" width="92" height="48" />` : ""}</div>
       <div class="education-main">
         <div class="entry-heading"><h3>${escapeHtml(item.school)}</h3><p class="education-time">${escapeHtml(item.time)}</p></div>
         <p class="location">${escapeHtml(item.location)}</p>
@@ -141,6 +179,11 @@ document.getElementById("lang-toggle").addEventListener("click", () => {
   renderPage();
 });
 document.getElementById("print-cv")?.addEventListener("click", () => window.print());
+document.getElementById("theme-toggle")?.addEventListener("click", () => {
+  theme = theme === "dark" ? "light" : "dark";
+  try { localStorage.setItem("siteTheme", theme); } catch { /* 不影响切换。 */ }
+  renderTheme();
+});
 renderPage();
 
 // 仅在支持观察器且未开启减少动态效果时启用滚动渐入；失败不会隐藏内容。
@@ -153,7 +196,7 @@ if (!isCv && "IntersectionObserver" in window && !window.matchMedia("(prefers-re
       }
     });
   }, { threshold: 0.06 });
-  document.querySelectorAll("main > section:not(.hero)").forEach((section) => {
+  document.querySelectorAll("main > section:not(.intro)").forEach((section) => {
     section.classList.add("reveal");
     observer.observe(section);
   });

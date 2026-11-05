@@ -16,6 +16,7 @@ window.SITE_DATA = {
     name: "Qidong Sun",
     chineseName: "",
     siteLabel: "Chongqing University · Robotics Engineering",
+    profile: { role: "Robotics Engineering Undergraduate", school: "Chongqing University", visit: "CSC-funded Visiting Student at SUTD" },
     subtitle: "Robot Learning · Embodied AI · Quadruped Locomotion",
     summary: "I am a final-year undergraduate in Robotics Engineering at Chongqing University’s Elite Institute of Engineering. My work spans vision-language-action models, memory for long-horizon robot tasks, and reinforcement learning for quadruped locomotion.",
     about: "I study in the Mingyue Sci-Tech Innovation Class at Chongqing University. I am currently a CSC-funded visiting student at Singapore University of Technology and Design (SUTD), working on Unitree Go2 locomotion and parkour learning with Asst. Prof. Yihan Du and Dr. Shen Chen. I am interested in connecting multimodal perception, task memory, and reliable robot action.",
@@ -39,8 +40,7 @@ window.SITE_DATA = {
         detail: "ELITE INSTITUTE OF ENGINEERING · Mingyue Sci-Tech Innovation Class",
         note: "GPA: 3.51/4.00 · Weighted average: 86.00/100",
         time: "Sept. 2023 – June 2027",
-        logo: "assets/logos/cqu.png",
-        secondaryLogo: "assets/logos/eie.png"
+        logo: "assets/logos/cqu.png"
       }
     ],
     interests: ["Vision-Language-Action Models", "Long-Horizon Robot Learning", "Reinforcement Learning", "Quadruped Locomotion", "Embodied AI", "Simulation & Transfer"],
@@ -117,6 +117,7 @@ window.SITE_DATA = {
     name: "孙奇栋",
     chineseName: "Qidong Sun",
     siteLabel: "重庆大学 · 机器人工程",
+    profile: { role: "机器人工程本科生", school: "重庆大学", visit: "SUTD 访问学生 · CSC 资助" },
     subtitle: "机器人学习 · 具身智能 · 四足机器人运动控制",
     summary: "我是重庆大学国家卓越工程师学院机器人工程专业大四本科生，主要关注视觉—语言—动作模型（VLA）、长时序机器人任务中的记忆机制，以及四足机器人强化学习运动控制。",
     about: "我就读于重庆大学明月科创班（机器人工程），目前在中国国家留学基金管理委员会（CSC）全额资助下，于新加坡科技设计大学（SUTD）参与访问研究，与 Asst. Prof. Yihan Du 和 Dr. Shen Chen 开展 Unitree Go2 运动控制与跑酷学习相关工作。我希望探索如何将多模态感知、任务记忆与可靠的机器人动作连接起来。",
@@ -125,7 +126,7 @@ window.SITE_DATA = {
     sections: { about: "关于我", education: "教育与访问经历", interests: "研究兴趣", research: "研究经历", projects: "代表项目", patents: "专利", skills: "技术能力", certificates: "语言能力", awards: "荣誉与活动", contact: "联系" },
     education: [
       { school: "新加坡科技设计大学（SUTD）", location: "新加坡", degree: "访问学生", detail: "四足机器人运动控制与跑酷学习 · Asst. Prof. Yihan Du、Dr. Shen Chen", note: "中国国家留学基金管理委员会（CSC）全额资助", time: "2026.09 – 2026.12", logo: "assets/logos/sutd.png" },
-      { school: "重庆大学", location: "中国重庆", degree: "机器人工程本科 · 预计 2027 年 6 月毕业", detail: "国家卓越工程师学院（ELITE INSTITUTE OF ENGINEERING）· 明月科创班", note: "GPA：3.51/4.00 · 加权平均分：86.00/100", time: "2023.09 – 2027.06", logo: "assets/logos/cqu.png", secondaryLogo: "assets/logos/eie.png" }
+      { school: "重庆大学", location: "中国重庆", degree: "机器人工程本科 · 预计 2027 年 6 月毕业", detail: "国家卓越工程师学院（ELITE INSTITUTE OF ENGINEERING）· 明月科创班", note: "GPA：3.51/4.00 · 加权平均分：86.00/100", time: "2023.09 – 2027.06", logo: "assets/logos/cqu.png" }
     ],
     interests: ["视觉—语言—动作模型", "长时序机器人学习", "强化学习", "四足机器人运动控制", "具身智能", "仿真与迁移"],
     research: [
