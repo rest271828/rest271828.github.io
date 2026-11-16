@@ -66,7 +66,7 @@ section { margin-bottom: 54px; }
 .small-label { margin-bottom: 14px; color: var(--muted); font-size: 14px; }
 .subtitle { color: var(--link); font-size: 18px; margin-bottom: 19px; }
 .portrait { width: 128px; height: 128px; border-radius: 50%; overflow: hidden; }
-.portrait img { width: 100%; height: 100%; object-fit: cover; }
+.portrait img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
 .links { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; }
 .links { margin-bottom: 0; }
 #about-text { max-width: 970px; }
@@ -532,5 +532,5 @@ html:has(.home-page) { scroll-padding-top: 76px; }
 }
 
 /* 头像：圆形、细边框，替代姓名缩写圆章。 */
-.home-page .profile .portrait { width: 132px; height: 132px; margin: 6px 0 18px 6px; border: 0; outline: 0; box-shadow: 0 0 0 1px var(--line), 0 0 0 5px var(--surface), 0 0 0 6px var(--line); }
+.home-page .profile .portrait { width: 150px; height: 150px; margin: 6px 0 18px 6px; border: 0; outline: 0; box-shadow: 0 0 0 1px var(--line), 0 0 0 5px var(--surface), 0 0 0 6px var(--line); }
 @media (max-width: 760px) { .home-page .profile .portrait { width: 96px; height: 96px; } }
