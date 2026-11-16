@@ -367,3 +367,166 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
   .education-item, .project-item, .text-item, .skill-row, li { break-inside: avoid; }
   a { color: inherit; }
 }
+
+/* ===== 视觉精修（refresh-1）：衬线标题 + 无衬线正文、更沉稳的石墨灰、细线标题、标签胶囊、研究时间线。
+   只在此块调整外观；内容仍在 site-data.js。 ===== */
+.home-page {
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "Noto Serif SC", "Songti SC", "STSong", serif;
+  --surface: #e9e9e6;
+  --masthead: rgba(233, 233, 230, .86);
+  --footer: #e1e1dd;
+  --panel: rgba(0, 0, 0, .035);
+  --text: #23262a;
+  --muted: #5d636a;
+  --faint: #8b9198;
+  --link: #1d5f73;
+  --line: #d2d3cf;
+  --accent: #2f7d8f;
+  font-size: 15.5px;
+  -webkit-font-smoothing: antialiased;
+}
+[data-theme="dark"] .home-page {
+  --surface: #2b2d30;
+  --masthead: rgba(43, 45, 48, .86);
+  --footer: #26282b;
+  --panel: rgba(255, 255, 255, .035);
+  --text: #ebe9e4;
+  --muted: #b3b5b8;
+  --faint: #868a8f;
+  --link: #9fd2db;
+  --line: #44474b;
+  --accent: #7fc0cc;
+}
+.home-page ::selection { background: color-mix(in srgb, var(--accent) 35%, transparent); }
+
+/* 顶栏：吸顶 + 轻微毛玻璃，滚动时导航始终可达。 */
+.home-page .site-header {
+  position: sticky; top: 0; z-index: 20;
+  background: var(--masthead);
+  -webkit-backdrop-filter: saturate(140%) blur(10px);
+  backdrop-filter: saturate(140%) blur(10px);
+}
+.home-page .site-header .site-title { font-family: var(--serif); font-size: 18px; font-weight: 600; letter-spacing: .01em; }
+.home-page { scroll-padding-top: 76px; }
+html:has(.home-page) { scroll-padding-top: 76px; }
+
+/* 侧栏：无照片时显示姓名缩写圆章。 */
+.home-page .monogram {
+  display: grid; place-items: center;
+  width: 76px; height: 76px; margin-bottom: 18px;
+  border: 1px solid var(--line); border-radius: 50%;
+  background: var(--panel);
+  color: var(--accent);
+  font-family: var(--serif); font-size: 26px; letter-spacing: .04em;
+}
+.home-page .portrait:not([hidden]) + .monogram { display: none; }
+.home-page .profile::before { display: none; }
+.home-page .profile { top: 92px; }
+.home-page .profile-name { font-family: var(--serif); font-size: 25px; font-weight: 600; }
+.home-page .profile-links a { font-size: 14px; }
+
+/* 标题：衬线字体，标题后接一条细线，取代整行下划线。 */
+.home-page h1, .home-page h2 { font-family: var(--serif); font-weight: 600; letter-spacing: .005em; }
+.home-page h1 { font-size: 38px; margin-bottom: 10px; }
+.home-page h2 {
+  display: flex; align-items: center; gap: 18px;
+  padding-bottom: 0; margin-bottom: 22px; border: 0;
+  font-size: 23px;
+}
+.home-page h2::after { flex: 1; height: 1px; content: ""; background: var(--line); }
+.home-page main > section { margin-bottom: 52px; }
+.home-page main p, .home-page .highlights { max-width: 72ch; }
+.home-page .subtitle { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.home-page #hero-summary { font-size: 17px; line-height: 1.7; color: var(--text); }
+.home-page #about-text { color: var(--muted); }
+
+/* 研究兴趣与技术栈：低对比胶囊标签。 */
+.home-page .interest-list { gap: 8px; }
+.home-page .interest-list span,
+.home-page .tech-list span,
+.home-page .skill-row span {
+  padding: 2px 10px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--panel);
+  font-size: 12.5px; line-height: 1.7; color: var(--muted);
+}
+.home-page .interest-list span { font-size: 13.5px; padding: 3px 12px; color: var(--text); }
+.home-page .interest-list span::after,
+.home-page .tech-list span::after,
+.home-page .skill-row span::after { display: none; }
+.home-page .tech-list, .home-page .skill-row p { gap: 6px; margin-top: 4px; }
+
+/* 教育 */
+.home-page .education-list { gap: 28px; }
+.home-page .education-main h3 { font-size: 18px; }
+.home-page .education-degree { color: var(--text); }
+.home-page .education-main > p:not(.location):not(.education-degree) { color: var(--muted); }
+
+/* 研究经历：左侧细时间线。 */
+.home-page #research-list { gap: 0; }
+.home-page #research-list .text-item { position: relative; padding-bottom: 28px; }
+.home-page #research-list .text-item > div { position: relative; padding-left: 22px; border-left: 1px solid var(--line); }
+.home-page #research-list .text-item > div::before {
+  position: absolute; top: 9px; left: -4px;
+  width: 7px; height: 7px; border-radius: 50%;
+  content: ""; background: var(--accent);
+}
+.home-page #research-list .text-item:last-child { padding-bottom: 0; }
+.home-page .item-time { font-variant-numeric: tabular-nums; color: var(--faint); }
+.home-page .affiliation { font-size: 14px; }
+.home-page .highlights { color: var(--muted); }
+.home-page .highlights li::marker { color: var(--faint); }
+
+/* 项目：衬线编号，悬停时轻微底色。 */
+.home-page .project-list { gap: 10px; }
+.home-page .project-item {
+  padding: 18px 18px 18px 64px; margin-inline: -18px;
+  border: 0; border-radius: 8px;
+  transition: background-color 220ms ease;
+}
+.home-page .project-item:last-child { padding-bottom: 18px; }
+.home-page .project-item:hover { background: var(--panel); }
+.home-page .project-item::before {
+  top: 15px; left: 18px;
+  font-family: var(--serif); font-size: 22px; font-weight: 500;
+  color: var(--accent); opacity: .85;
+}
+.home-page .project-copy .links a { font-size: 14px; font-weight: 600; }
+.home-page .project-copy .links a::after { content: " →"; }
+
+/* 技能、语言、荣誉 */
+.home-page .skill-row { grid-template-columns: 170px minmax(0, 1fr); padding: 14px 0; }
+.home-page .skill-row:last-child { border-bottom: 0; }
+.home-page .skill-row h3 { font-size: 14.5px; padding-top: 3px; }
+.home-page #award-list li { padding: 7px 0; margin: 0; border-bottom: 1px dashed var(--line); }
+.home-page #award-list li:last-child { border-bottom: 0; }
+.home-page .list-time { color: var(--faint); font-variant-numeric: tabular-nums; }
+
+/* 链接下划线由左向右展开。 */
+.home-page main a:not(.skip-link) {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 220ms ease, color 220ms ease;
+}
+.home-page main a:hover { text-decoration: none; background-size: 100% 1px; }
+
+/* 主题切换时颜色平滑过渡。 */
+.home-page, .home-page .site-header, .home-page .site-footer { transition: background-color 300ms ease, color 300ms ease; }
+
+@media (max-width: 760px) {
+  .home-page .site-header { position: static; }
+  .home-page, html:has(.home-page) { scroll-padding-top: 16px; }
+  .home-page .profile { position: static; }
+  .home-page .monogram { width: 60px; height: 60px; font-size: 21px; margin-bottom: 12px; }
+  .home-page h1 { font-size: 30px; }
+  .home-page h2 { font-size: 21px; }
+  .home-page #hero-summary { font-size: 16px; }
+  .home-page .project-item { padding: 14px 12px 14px 48px; margin-inline: -12px; }
+  .home-page .project-item::before { left: 12px; top: 11px; font-size: 19px; }
+  .home-page #research-list .text-item > div { padding-left: 16px; }
+  .home-page .skill-row { grid-template-columns: 1fr; }
+}
+@media print {
+  .home-page .monogram { display: none; }
+  .home-page h2::after { background: #bbb; }
+  .home-page .interest-list span, .home-page .tech-list span, .home-page .skill-row span { border: 0; padding: 0 6px 0 0; background: none; }
+}
