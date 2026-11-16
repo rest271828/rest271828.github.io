@@ -114,7 +114,7 @@ function runView(page, stored = "en", blocked = false, reduced = false, savedThe
 }
 
 const themed = runView("index.html", "en", false, false, "dark");
-check(themed.portrait.hidden === true, "未设置照片时应隐藏头像位");
+check(themed.portrait.hidden === !data.avatar, "头像位显示状态与 avatar 设置不一致");
 const section = themed.sections[0];
 check(section.dataset.motion === "visible", "视口内章节应正常显示");
 themed.observeEntries([{ target: section, isIntersecting: false, boundingClientRect: { bottom: 10 }, rootBounds: { top: 18 } }]);

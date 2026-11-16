@@ -530,3 +530,7 @@ html:has(.home-page) { scroll-padding-top: 76px; }
   .home-page h2::after { background: #bbb; }
   .home-page .interest-list span, .home-page .tech-list span, .home-page .skill-row span { border: 0; padding: 0 6px 0 0; background: none; }
 }
+
+/* 头像：圆形、细边框，替代姓名缩写圆章。 */
+.home-page .profile .portrait { width: 132px; height: 132px; margin: 6px 0 18px 6px; border: 0; outline: 0; box-shadow: 0 0 0 1px var(--line), 0 0 0 5px var(--surface), 0 0 0 6px var(--line); }
+@media (max-width: 760px) { .home-page .profile .portrait { width: 96px; height: 96px; } }

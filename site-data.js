@@ -2,7 +2,7 @@
 // 不要填写护照、身份证、学号、住址、出生日期、签名或申请系统账号。
 window.SITE_DATA = {
   // 可修改：公开头像放在 assets/profile.webp，并加入发布清单；留空则不显示。
-  avatar: "",
+  avatar: "assets/profile.webp",
   // 可修改：沿用已授权公开的邮箱，不额外公开手机号。
   email: "sunqidong152@gmail.com",
   github: "https://github.com/rest271828",
