@@ -2,8 +2,11 @@
 $ErrorActionPreference = "Stop"
 $sourceRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot ".."))
 $publicFiles = @(Get-Content -LiteralPath (Join-Path $PSScriptRoot "public-files.json") -Encoding UTF8 -Raw | ConvertFrom-Json)
-$sourceFiles = @(".gitignore", "EDITING.md", "tools/public-files.json", "tools/check-site.cjs", "tools/publish.ps1")
+$sourceFiles = @(".gitignore", "EDITING.md", "tools/public-files.json", "tools/check-site.cjs", "tools/publish.ps1", "tools/prerender.cjs", "tools/index.template.html")
 
+# 先根据 site-data.js 重新生成静态 index.html，再做检查。
+node (Join-Path $PSScriptRoot "prerender.cjs")
+if ($LASTEXITCODE -ne 0) { throw "预渲染失败，停止发布。" }
 node (Join-Path $PSScriptRoot "check-site.cjs")
 if ($LASTEXITCODE -ne 0) { throw "内容检查失败，停止发布。" }
 

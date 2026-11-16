@@ -6,13 +6,13 @@
 
 - `site-data.js`：姓名、介绍、教育、日期、研究、项目、技能、奖项和邮箱。英文在 `en`，中文在 `zh`。修改时同步维护两种语言。
 - `styles.css`：字体、深灰背景、双栏布局和章节滑动效果。首次打开是深灰和英文，访客可自行切换。首页设计参考 [Academic Pages](https://academicpages.github.io/)。
-- `index.html`：资料侧栏和主页章节顺序。侧栏内容在 `site-data.js` 的 `profile` 中维护。
+- `tools/index.template.html`：页面骨架、章节顺序和链接预览标签。**不要直接改 `index.html`**，它由 `node tools/prerender.cjs` 根据模板和 `site-data.js` 自动生成（含完整英文正文），这样搜索引擎、链接预览和 AI 工具不跑 JavaScript 也能读到内容。发布脚本会自动运行这一步。
+- `assets/profile.webp`（侧栏头像）、`assets/og-avatar.jpg`（链接预览图）、`assets/favicon.png`（浏览器标签图标）。
 - `assets/Qidong-Sun-CV.pdf`：保留原 Overleaf 排版的一页公开简历。顶部和侧栏直接下载此文件。
 - `assets/logos/`：重庆大学圆形校徽和 SUTD 校标；不展示横版重庆大学校名图或院徽。
-- 头像暂不显示。收到确认可公开的照片后，将图片放入 `assets/`，更新 `site-data.js` 的 `avatar` 与发布清单。
 - `assets/projects/`：允许公开的真实项目截图或演示。图片路径填入项目的 `image`，没有则留空。
 
-保存后刷新本地网页即可查看变化。VS Code 的 Live Server 可以提供保存后自动刷新。
+改完 `site-data.js` 后运行 `node tools/prerender.cjs`，再刷新本地网页查看变化（不运行也能在浏览器里看到新内容，但静态正文会是旧的，`check-site` 会提示）。VS Code 的 Live Server 可以提供保存后自动刷新。
 线上版本需要将检查后的修改提交到 GitHub，等待 Pages 发布，不能靠本地保存自动更新。
 
 ## 隐私边界

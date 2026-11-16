@@ -141,4 +141,7 @@ const escaped = runView("index.html").nodes.get("project-list").innerHTML;
 check(escaped.includes("&lt;img"), "标题未进行 HTML 转义");
 check(!escaped.includes("javascript:"), "危险链接未过滤");
 data.en.projects[0].title = title;
+// 静态 index.html 必须与 site-data.js 同步，否则搜索引擎和链接预览会看到旧内容。
+check(require("./prerender.cjs").render() === read("index.html"), "index.html 不是最新的：请先运行 node tools/prerender.cjs");
+check(!/This page needs JavaScript/.test(read("index.html")) && read("index.html").includes(data.en.research[0].title), "index.html 缺少预渲染正文");
 console.log("PASS: " + passed + " static, rendering, language, privacy and safety checks.");

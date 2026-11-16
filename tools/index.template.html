@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- 仅加载本站资源：不接入统计追踪、第三方脚本或数据上传接口。 -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'" />
+    <meta name="referrer" content="no-referrer" />
+    <meta
+      name="description"
+      content="Qidong Sun's academic and engineering portfolio in robotics, robot learning, reinforcement learning, and quadruped locomotion."
+    />
+    <meta name="author" content="Qidong Sun" />
+    <title>Qidong Sun</title>
+    <link rel="canonical" href="https://rest271828.github.io/" />
+    <link rel="icon" href="assets/favicon.png" type="image/png" />
+    <!-- 链接预览卡片（微信、Slack、LinkedIn、邮件等）。description 由 tools/prerender.cjs 自动填写。 -->
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content="Qidong Sun" />
+    <meta property="og:title" content="Qidong Sun | Robotics &amp; Robot Learning" />
+    <meta property="og:description" content="" />
+    <meta property="og:url" content="https://rest271828.github.io/" />
+    <meta property="og:image" content="https://rest271828.github.io/assets/og-avatar.jpg" />
+    <meta property="og:image:width" content="600" />
+    <meta property="og:image:height" content="600" />
+    <meta property="og:image:alt" content="Portrait of Qidong Sun" />
+    <meta name="twitter:card" content="summary" />
+    <!--JSON-LD-->
+    <link rel="stylesheet" href="styles.css?v=static-1" />
+  </head>
+  <body class="home-page">
+    <a class="skip-link" href="#home">Skip to content / 跳转到正文</a>
+    <header class="site-header">
+      <div class="page topbar">
+        <a class="site-title" href="#home" id="site-title">Qidong Sun</a>
+        <nav aria-label="Main navigation" id="main-nav"></nav>
+        <div class="nav-wrap">
+          <button class="lang-toggle" id="lang-toggle" type="button" aria-label="切换为中文">中文</button>
+          <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"></button>
+        </div>
+      </div>
+    </header>
+
+    <div class="page site-layout">
+      <!-- 个人资料来自 site-data.js；未设置公开头像时不显示占位图。 -->
+      <aside class="profile" id="profile">
+        <div class="portrait" hidden></div>
+        <div class="monogram" aria-hidden="true">QS</div>
+        <p class="profile-name" id="profile-name">Qidong Sun</p>
+        <p class="profile-alternate" id="profile-alternate" hidden></p>
+        <p class="profile-role" id="profile-role"></p>
+        <p class="profile-school" id="profile-school"></p>
+        <p class="profile-visit" id="profile-visit"></p>
+        <div class="profile-links" id="hero-links"></div>
+      </aside>
+
+      <main id="home">
+        <section class="intro" id="about">
+          <h1 data-section-title="about">About</h1>
+          <p class="subtitle" id="hero-subtitle"></p>
+          <p id="hero-summary"></p>
+          <p id="about-text"></p>
+        </section>
+
+        <section id="education">
+          <h2 data-section-title="education"></h2>
+          <div class="education-list" id="education-list"></div>
+        </section>
+
+        <section id="interests">
+          <h2 data-section-title="interests"></h2>
+          <div class="interest-list" id="interest-list"></div>
+        </section>
+
+        <section id="research">
+          <h2 data-section-title="research"></h2>
+          <div class="item-list" id="research-list"></div>
+        </section>
+
+        <section id="projects">
+          <h2 data-section-title="projects"></h2>
+          <div class="project-list" id="project-list"></div>
+        </section>
+
+        <section id="patents">
+          <h2 data-section-title="patents"></h2>
+          <div class="item-list" id="patent-list"></div>
+        </section>
+
+        <section id="skills">
+          <h2 data-section-title="skills"></h2>
+          <div class="skill-list" id="skill-list"></div>
+        </section>
+
+        <section id="certificates">
+          <h2 data-section-title="certificates"></h2>
+          <ul class="plain-list" id="certificate-list"></ul>
+        </section>
+
+        <section id="awards">
+          <h2 data-section-title="awards"></h2>
+          <ul class="plain-list" id="award-list"></ul>
+        </section>
+
+        <section id="contact">
+          <h2 data-section-title="contact"></h2>
+          <p id="contact-text"></p>
+          <p class="links" id="contact-links"></p>
+        </section>
+      </main>
+    </div>
+    <footer class="site-footer">
+      <div class="page footer-inner">
+        <span id="footer-updated"></span>
+        <span>Built with GitHub Pages · Inspired by <a href="https://academicpages.github.io/">Academic Pages</a></span>
+      </div>
+    </footer>
+
+    <!-- 内容修改 site-data.js；排版修改 styles.css；逻辑修改 script.js。
+         本文件由 tools/prerender.cjs 根据 tools/index.template.html 生成，请修改模板而不是本文件。 -->
+    <script src="site-data.js?v=static-1"></script>
+    <script src="script.js?v=static-1"></script>
+  </body>
+</html>
+
+
